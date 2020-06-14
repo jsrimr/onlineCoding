@@ -1,6 +1,7 @@
 {
   "hosting": {
-    "public": "public",
+    "site": "awesome-firebase-helloworld",
+    "public": "./public",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -14,3 +15,4 @@
     ]
   }
 }
+

@@ -62,9 +62,10 @@ function saveMessage(messageText) {
 }
 
 // Loads chat messages history and listens for upcoming ones.
-function loadMessages() {
+// display 함수 밑 createAndInsert의 messageTemplate에서 정함
+function loadMessages() { 
     // TODO 8: Load and listens for new messages.
-    var query = firebase.firestore().collection('messages').orderBy('timestamp', 'desc').limit(12);
+    var query = firebase.firestore().collection('teachers').orderBy('timestamp', 'desc').limit(12);
 
     query.onSnapshot(function(snapshot) {
         snapshot.docChanges().forEach(function(change) {
@@ -72,7 +73,7 @@ function loadMessages() {
                 deleteMessage(change.doc.id);
             } else {
                 var message = change.doc.data();
-                displayMessage(change.doc.id, message.timestamp, message.name,
+                displayTeacher(change.doc.id, message.timestamp, message.name,
                     message.text, message.profilePicUrl, message.imageUrl);
             }
         })
@@ -286,6 +287,23 @@ function createAndInsertMessage(id, timestamp) {
     }
 
     return div;
+}
+
+// Displays a Message in the UI.
+function displayTeacher(id, timestamp, name, text, picUrl, imageUrl) {
+    var div = document.getElementById(id) || createAndInsertMessage(id, timestamp);
+
+    // profile picture
+    if (imageUrl) {
+        div.querySelector('.pic').style.backgroundImage = 'url(' + addSizeToLectureProfilePic(picUrl) + ')';
+    } else if (text) {
+        messageElement.textContent = text;
+        // Replace all line breaks by <br>.
+        messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
+    }
+
+    div.querySelector('.name').textContent = name;
+
 }
 
 // Displays a Message in the UI.
